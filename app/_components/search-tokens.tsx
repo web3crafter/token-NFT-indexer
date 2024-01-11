@@ -2,14 +2,13 @@
 
 import { Dispatch, SetStateAction } from "react"
 
-import { useGetTokensForOwner } from "@/hooks/useGetTokensForOwner"
 import { GetTokensOptions } from "@/types/tokens"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { isAddress } from "viem"
 import { toast } from "sonner"
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 
 interface SearchTokensProps {
   getTokensOptions: GetTokensOptions
@@ -24,15 +23,16 @@ const SearchTokens = ({
   refetchTokens,
   refetchEthBalance,
 }: SearchTokensProps) => {
-  // const { refetch } = useGetTokensForOwner(getTokensOptions)
+  const router = useRouter()
 
   const search = () => {
-    if (!isAddress(getTokensOptions.ownerAddress)) {
+    if (!isAddress(getTokensOptions.address)) {
       toast.error("Invalid address")
     } else {
       setGetTokensOptions({ ...getTokensOptions, isEnabled: true })
       refetchTokens()
       refetchEthBalance()
+      router.push(`/address/${getTokensOptions.address}`)
     }
   }
 
@@ -43,7 +43,7 @@ const SearchTokens = ({
         onChange={(e) =>
           setGetTokensOptions({
             ...getTokensOptions,
-            ownerAddress: e.target.value,
+            address: e.target.value,
           })
         }
         className="w-96"

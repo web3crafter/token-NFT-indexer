@@ -20,7 +20,7 @@ interface TokensOverviewProps {
   tokens: Token[] | undefined
   isLoadingTokens: boolean
   statusGetTokens: "error" | "success" | "pending"
-  isRefetchingTokens: boolean
+  isRefetchingTokens?: boolean
 }
 
 const TokensOverview = ({
