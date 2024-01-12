@@ -5,11 +5,12 @@ import { GetTokensOptions } from "@/types/tokens"
 
 export const useGetTokensForAddress = ({
   address,
+  chainId,
   isEnabled,
 }: GetTokensOptions) => {
   return useQuery({
     queryKey: ["TokensForAddress", address],
-    queryFn: () => getTokens(address),
+    queryFn: () => getTokens(address, chainId),
     enabled: isEnabled,
   })
 }

@@ -1,7 +1,7 @@
 import { alchemyClient } from "@/lib/alchemy-client"
 
-export const getTokens = async (address: string) => {
-  const alchemy = alchemyClient()
+export const getTokens = async (address: string, chainId: number) => {
+  const alchemy = alchemyClient(chainId)
 
   try {
     const tokensForOwner = await alchemy.core.getTokensForOwner(address)

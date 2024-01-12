@@ -1,22 +1,22 @@
 "use client"
+
 import "@rainbow-me/rainbowkit/styles.css"
+import { arbitrum, mainnet } from "viem/chains"
+import { WagmiConfig, configureChains, createConfig } from "wagmi"
+import { publicProvider } from "wagmi/providers/public"
 import {
   RainbowKitProvider,
   getDefaultWallets,
   midnightTheme,
 } from "@rainbow-me/rainbowkit"
-import { WagmiConfig, configureChains, createConfig, mainnet } from "wagmi"
-import { alchemyProvider } from "wagmi/providers/alchemy"
-import { publicProvider } from "wagmi/providers/public"
+
 import { useIsMounted } from "@/hooks/useIsMounted"
+
 import Avatar from "@/components/avatar"
 
 const { chains, publicClient } = configureChains(
-  [mainnet],
-  [
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ETH_URL! }),
-    publicProvider(),
-  ]
+  [mainnet, arbitrum],
+  [publicProvider()]
 )
 
 const appInfo = {
@@ -26,7 +26,7 @@ const appInfo = {
 const { connectors } = getDefaultWallets({
   appName: appInfo.appName,
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID!,
-  chains: [mainnet],
+  chains: [mainnet, arbitrum],
 })
 
 const wagmiConfig = createConfig({
