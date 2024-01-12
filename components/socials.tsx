@@ -1,23 +1,30 @@
-import { Icons } from "@/constants/icons"
 import { buttonVariants } from "@/components/ui/button"
-import { siteConfig } from "@/config/site"
 import Link from "next/link"
+import { Social } from "@/types/sosial"
+import { cn } from "@/lib/utils"
 
-const Socials = () => {
+interface SocialsProps {
+  socials: Social[]
+}
+
+const Socials = ({ socials }: SocialsProps) => {
   return (
     <div className="flex items-center space-x-1">
-      <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
-        <div className={buttonVariants({ size: "icon", variant: "ghost" })}>
-          <Icons.gitHub className="w-5 h-5 fill-current" />
-          <span className="sr-only">GitHub</span>
-        </div>
-      </Link>
-      <Link href={siteConfig.links.twitter} target="_blank" rel="noreferrer">
-        <div className={buttonVariants({ size: "icon", variant: "ghost" })}>
-          <Icons.twitter className="w-4 h-4 fill-current" />
-          <span className="sr-only">Twitter</span>
-        </div>
-      </Link>
+      {socials.map((social) => (
+        <Link
+          key={social.href}
+          href={social.href}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className={buttonVariants({ size: "icon", variant: "ghost" })}>
+            <social.icon
+              className={cn("w-5 h-5 fill-current", social.className)}
+            />
+            <span className="sr-only">{social.name}</span>
+          </div>
+        </Link>
+      ))}
     </div>
   )
 }
