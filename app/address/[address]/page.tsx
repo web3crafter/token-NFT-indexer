@@ -1,31 +1,37 @@
 "use client"
 
-import { useBalance } from "wagmi"
+import { useAccount, useBalance, useNetwork } from "wagmi"
 
 import { useGetTokensForAddress } from "@/hooks/usegetTokensForAddress"
 
 import TokensOverview from "@/components/tokens-overview"
 import { formatAddress } from "@/lib/utils"
+import { useEffect, useState } from "react"
 
 const AddressPage = ({ params }: { params: { address: string } }) => {
   const { address } = params
+  const { chain } = useNetwork()
 
   const {
     data,
     status: statusGetTokens,
     isLoading: isLoadingTokens,
     isError,
-  } = useGetTokensForAddress({ address: address, isEnabled: true })
+  } = useGetTokensForAddress({
+    address: address,
+    chainId: chain?.id,
+    isEnabled: true,
+  })
   const tokens = data?.tokens
 
-  const { data: ethData, isLoading: isLoadingEthBalance } = useBalance({
+  const { data: nativeTokenData, isLoading: isLoadingEthBalance } = useBalance({
     address: address as `0x${string}`,
   })
 
-  const ethToken = {
-    symbol: ethData?.symbol,
-    balance: ethData?.formatted,
-    logo: "/eth_logo.png",
+  const nativeToken = {
+    symbol: nativeTokenData?.symbol,
+    balance: nativeTokenData?.formatted,
+    logo: chain?.id === 1 ? "/eth_logo.png" : "/arb-logo.png",
   }
 
   return (
@@ -39,7 +45,7 @@ const AddressPage = ({ params }: { params: { address: string } }) => {
         <p>Error</p>
       ) : (
         <TokensOverview
-          ethToken={ethToken}
+          nativeToken={nativeToken}
           isLoadingEthBalance={isLoadingEthBalance}
           isLoadingTokens={isLoadingTokens}
           tokens={tokens}

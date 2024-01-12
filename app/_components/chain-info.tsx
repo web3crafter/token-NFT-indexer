@@ -1,36 +1,39 @@
 "use client"
 
-import Socials from "@/components/socials"
-import { Card } from "@/components/ui/card"
-import { Icons } from "@/constants/icons"
+import { useEffect, useState } from "react"
+import { useAccount, useNetwork } from "wagmi"
+import Image from "next/image"
+import { Home } from "lucide-react"
+
 import { useGetChainData } from "@/hooks/useGetChainData"
 import { Social } from "@/types/sosial"
-import { Home } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { useEffect, useState } from "react"
-import { useAccount } from "wagmi"
+import { Icons } from "@/constants/icons"
+
+import { Card } from "@/components/ui/card"
+import Socials from "@/components/socials"
 
 export type ChainDataParams = {
-  chainName: string | undefined
+  chainId: number
   isEnabled: boolean
 }
 
 const ChainInfo = () => {
-  const { connector } = useAccount()
+  const { chain } = useNetwork()
   const [chainDataParams, setChainDataParams] = useState<ChainDataParams>({
-    chainName: "",
+    chainId: 0,
     isEnabled: false,
   })
 
   useEffect(() => {
-    if (connector !== undefined) {
-      setChainDataParams({
-        chainName: connector?.chains[0].name,
-        isEnabled: true,
-      })
+    if (chain !== undefined) {
+      if (chain.id) {
+        setChainDataParams({
+          chainId: chain.id,
+          isEnabled: true,
+        })
+      }
     }
-  }, [connector])
+  }, [chain])
 
   const { data } = useGetChainData(chainDataParams)
 
@@ -56,16 +59,18 @@ const ChainInfo = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full gap-4">
-      <Card className="flex items-center justify-center">
-        <div className="relative h-56 w-36">
-          {data?.image && (
-            <Image
-              src={data?.image.large}
-              alt="chain logo"
-              fill
-              className="object-contain"
-            />
-          )}
+      <Card className="grid grid-cols-2">
+        <div className="h-full p-2 rounded-md rounded-r-none bg-secondary">
+          <div className="relative w-56 h-full">
+            {data?.image && (
+              <Image
+                src={data?.image.large}
+                alt="chain logo"
+                fill
+                className="object-cover"
+              />
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col h-full gap-4 p-4 text-center">
