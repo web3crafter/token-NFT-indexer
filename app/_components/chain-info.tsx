@@ -1,41 +1,29 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useAccount, useNetwork } from "wagmi"
 import Image from "next/image"
+import { useEffect } from "react"
 import { Home } from "lucide-react"
 
-import { useGetChainData } from "@/hooks/useGetChainData"
 import { Social } from "@/types/sosial"
 import { Icons } from "@/constants/icons"
+
+import { useGetChainDataFromCoinGecko } from "@/hooks/useGetChainDataFromCoinGecko"
+import { useGetChainId } from "@/hooks/useGetChainId"
 
 import { Card } from "@/components/ui/card"
 import Socials from "@/components/socials"
 
-export type ChainDataParams = {
-  chainId: number
-  isEnabled: boolean
-}
-
 const ChainInfo = () => {
-  const { chain } = useNetwork()
-  const [chainDataParams, setChainDataParams] = useState<ChainDataParams>({
-    chainId: 0,
-    isEnabled: false,
+  const { chainId } = useGetChainId()
+
+  const { data, refetch } = useGetChainDataFromCoinGecko({
+    chainId: chainId,
+    isEnabled: true,
   })
 
   useEffect(() => {
-    if (chain !== undefined) {
-      if (chain.id) {
-        setChainDataParams({
-          chainId: chain.id,
-          isEnabled: true,
-        })
-      }
-    }
-  }, [chain])
-
-  const { data } = useGetChainData(chainDataParams)
+    refetch()
+  }, [chainId, refetch])
 
   if (!data) return null
 
@@ -90,7 +78,9 @@ const ChainInfo = () => {
             <p className="font-semibold">market cap rank</p>
             <p className="text-lg"># {data?.market_cap_rank}</p>
           </div>
-          <Socials socials={chainSocials} />
+          <div className="flex w-full justify-center">
+            <Socials socials={chainSocials} />
+          </div>
         </div>
       </Card>
 

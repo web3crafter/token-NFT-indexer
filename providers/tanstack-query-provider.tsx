@@ -18,9 +18,11 @@ export const TanstackQueryProvider = ({
     () =>
       new QueryClient({
         queryCache: new QueryCache({
-          onError: (error) =>
-            toast.error(`Something went wrong: ${error.message}`),
-          // onSuccess: () => toast.success("Success"),
+          onError: (error) => {
+            if (!error.message.includes("value=undefined")) {
+              toast.error(`Something went wrong: ${error.message}`)
+            }
+          },
         }),
       })
   )
