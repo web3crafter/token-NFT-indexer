@@ -8,11 +8,7 @@ import CustomConnectButton from "@/components/buttons/custom-connect-button"
 import { Social } from "@/types/sosial"
 import { Icons } from "@/constants/icons"
 import ChainButton from "@/components/buttons/chain-button"
-
-const mySocials: Social[] = [
-  { href: siteConfig.links.github, icon: Icons.gitHub },
-  { href: siteConfig.links.twitter, icon: Icons.twitter, className: "h-4 w-4" },
-]
+import { mySocials } from "@/config/my-socials"
 
 const SiteHeader = () => {
   return (

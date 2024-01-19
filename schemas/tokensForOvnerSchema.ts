@@ -1,4 +1,3 @@
-import { TokenMarkedDataSchema } from "@/schemas/tokenMarketDataSchema"
 import { z } from "zod"
 
 export const tokenSchema = z.object({

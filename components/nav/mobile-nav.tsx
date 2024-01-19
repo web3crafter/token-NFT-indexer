@@ -15,6 +15,7 @@ import MobileLink from "@/components/nav/mobile-link"
 import Socials from "@/components/socials"
 import ThemeToggle from "@/components/buttons/theme-toggle"
 import CustomConnectButton from "@/components/buttons/custom-connect-button"
+import { mySocials } from "@/config/my-socials"
 
 interface MobileNavProps {
   items?: NavItem[]
@@ -63,7 +64,7 @@ const MobileNav = ({ items, className }: MobileNavProps) => {
           </div>
         </ScrollArea>
         <div className="flex items-center justify-end space-x-1">
-          <Socials />
+          <Socials socials={mySocials} />
           <ThemeToggle />
         </div>
       </SheetContent>
