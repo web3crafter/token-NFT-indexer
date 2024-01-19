@@ -1,10 +1,9 @@
 "use client"
 
-import { Skeleton } from "@/components/ui/skeleton"
+import { Token } from "@/schemas/tokensForOvnerSchema"
+
 import TokenCard from "@/components/token-card"
 import TokenCardSkeleton from "@/components/token-card-skeleton"
-import NativeTokenCard from "@/components/native-token-card"
-import { Token } from "@/schemas/tokensForOvnerSchema"
 
 interface TokensOverviewProps {
   tokens: Token[] | undefined
@@ -22,8 +21,6 @@ const TokensOverview = ({
   return (
     <div className="flex flex-col items-center w-full gap-8">
       <div className="flex flex-col items-center w-full gap-4 p-8 rounded-lg bg-secondary">
-        <NativeTokenCard />
-
         {statusTokens === "success" && !tokens?.length && (
           <div>
             <p className="text-lg text-muted-foreground">No tokens found</p>

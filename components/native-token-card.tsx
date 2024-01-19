@@ -1,9 +1,14 @@
 "use client"
 
+import Image from "next/image"
+import { useEffect, useState } from "react"
+import { useBalance } from "wagmi"
+
+import { getChainInfo } from "@/lib/getChainInfo"
+import { useGetChainId } from "@/hooks/useGetChainId"
+
 import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import Image from "next/image"
-import { useAccount, useBalance } from "wagmi"
 
 export type NativeToken = {
   symbol: string | undefined
@@ -11,17 +16,38 @@ export type NativeToken = {
   logo: string
 }
 
-const NativeTokenCard = () => {
-  const { address, status: connectedWalletStatus } = useAccount()
-  const { data: nativeTokenData, isLoading: isLoadingEthBalance } = useBalance({
+interface NativeTokenCardProps {
+  address: string
+}
+
+const NativeTokenCard = ({ address }: NativeTokenCardProps) => {
+  const { chainId } = useGetChainId()
+
+  const chainData = getChainInfo(chainId)
+
+  const {
+    data: nativeTokenData,
+    isLoading: isLoadingEthBalance,
+    refetch,
+  } = useBalance({
     address: address as `0x${string}`,
+    chainId: chainData.id,
   })
 
-  const nativeToken: NativeToken = {
+  const [nativeToken, setNativeToken] = useState<NativeToken>({
     symbol: nativeTokenData?.symbol,
     balance: nativeTokenData?.formatted,
     logo: nativeTokenData?.symbol === "ETH" ? "/eth_logo.png" : "/arb-logo.png",
-  }
+  })
+
+  useEffect(() => {
+    refetch()
+    setNativeToken({
+      symbol: chainData.symbol.toUpperCase(),
+      balance: nativeTokenData?.formatted,
+      logo: chainData.logo,
+    })
+  }, [chainData.id, nativeTokenData])
 
   return (
     <>

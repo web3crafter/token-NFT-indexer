@@ -1,5 +1,5 @@
 import ChainInfo from "@/app/_components/chain-info"
-import SearchTokens from "@/app/_components/search-tokens"
+import SearchTokens from "@/components/search-tokens"
 
 export default function Home() {
   return (

@@ -1,23 +1,24 @@
 "use client"
 
-import { Dispatch, SetStateAction, useState } from "react"
+import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { toast } from "sonner"
+import { isAddress } from "viem"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { isAddress } from "viem"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
 
 const SearchTokens = () => {
   const [address, setAddress] = useState<string>("")
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const search = () => {
     if (!isAddress(address)) {
       toast.error("Invalid address")
     } else {
       setAddress(address)
-      router.push(`/address/${address}`)
+      router.push(`/address/${address}/?chainId=${searchParams.get("chainId")}`)
     }
   }
 

@@ -1,56 +1,61 @@
 "use client"
+import { useEffect } from "react"
+import { useAccount } from "wagmi"
 
-import { useAccount, useBalance, useNetwork } from "wagmi"
+import { formatAddress } from "@/lib/utils"
+import { getChainInfo } from "@/lib/getChainInfo"
 
 import { useGetTokensForAddress } from "@/hooks/usegetTokensForAddress"
 
 import TokensOverview from "@/components/tokens-overview"
-import { formatAddress } from "@/lib/utils"
-import { useEffect, useState } from "react"
+import ChainButton from "@/components/buttons/chain-button"
+import NativeTokenCard from "@/components/native-token-card"
+import { useGetChainId } from "@/hooks/useGetChainId"
 
 const AddressPage = ({ params }: { params: { address: string } }) => {
   const { address } = params
-  const { chain } = useNetwork()
+  const { chainId } = useGetChainId()
+
+  const { status: connectedWalletStatus } = useAccount()
+
+  const chainData = getChainInfo(chainId)
 
   const {
     data,
-    status: statusGetTokens,
+    status: statusTokens,
     isLoading: isLoadingTokens,
     isError,
+    refetch,
   } = useGetTokensForAddress({
     address: address,
-    chainId: chain?.id,
+    chainId: chainData.id,
     isEnabled: true,
   })
   const tokens = data?.tokens
 
-  const { data: nativeTokenData, isLoading: isLoadingEthBalance } = useBalance({
-    address: address as `0x${string}`,
-  })
-
-  const nativeToken = {
-    symbol: nativeTokenData?.symbol,
-    balance: nativeTokenData?.formatted,
-    logo: chain?.id === 1 ? "/eth_logo.png" : "/arb-logo.png",
-  }
+  useEffect(() => {
+    refetch()
+  }, [chainData.id, refetch])
 
   return (
     <main className="container flex flex-col items-center gap-8 my-12">
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-2">
         <h1 className="text-3xl font-semibold">
           {formatAddress(params.address)}
         </h1>
+        {connectedWalletStatus === "disconnected" && <ChainButton />}
       </div>
       {isError ? (
         <p>Error</p>
       ) : (
-        <TokensOverview
-          nativeToken={nativeToken}
-          isLoadingEthBalance={isLoadingEthBalance}
-          isLoadingTokens={isLoadingTokens}
-          tokens={tokens}
-          statusGetTokens={statusGetTokens}
-        />
+        <>
+          <NativeTokenCard address={address} />
+          <TokensOverview
+            tokens={tokens}
+            isLoadingTokens={isLoadingTokens}
+            statusTokens={statusTokens}
+          />
+        </>
       )}
     </main>
   )
