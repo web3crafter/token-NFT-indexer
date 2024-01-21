@@ -28,7 +28,7 @@ const NftCard = ({ nft }: NftCardProps) => {
           />
         ) : (
           <div className="absolute flex items-center justify-center w-full h-full bg-secondary">
-            X
+            Image not found
           </div>
         )}
       </div>
