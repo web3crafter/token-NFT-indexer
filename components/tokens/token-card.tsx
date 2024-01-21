@@ -36,6 +36,7 @@ const TokenCard = ({ token }: TokenCardProps) => {
         <Link
           href={`https://etherscan.io/address/${token.contractAddress}`}
           className="text-blue-600 dark:text-blue-500"
+          target="_blank"
         >
           {formatAddress(token.contractAddress)}
         </Link>
