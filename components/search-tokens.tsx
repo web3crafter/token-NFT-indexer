@@ -23,11 +23,11 @@ const SearchTokens = () => {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-center gap-2 w-full max-w-lg">
       <Input
         placeholder="0x...."
         onChange={(e) => setAddress(e.target.value)}
-        className="w-96"
+        className="w-full"
       />
       <Button onClick={search}>Check</Button>
     </div>

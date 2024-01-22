@@ -28,7 +28,7 @@ const TokenType = ({ address }: TokenTypeProps) => {
           NFTS
         </Button>
       </div>
-      <div className="flex flex-col items-center w-full gap-4 p-8 rounded-lg bg-secondary">
+      <div className="flex flex-col items-center w-full gap-4 lg:p-8 rounded-lg bg-secondary">
         {nft ? (
           <NftsOverview address={address} />
         ) : (

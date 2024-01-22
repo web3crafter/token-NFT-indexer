@@ -48,7 +48,7 @@ const ChainInfo = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full gap-4">
-      <Card className="grid grid-cols-2">
+      <Card className="grid sm:grid-cols-2 grid-rows-2 sm:grid-rows-1 w-full max-w-lg">
         <div className="h-full p-2 rounded-md flex items-center justify-center rounded-r-none bg-secondary">
           <div
             className={cn(
@@ -94,7 +94,7 @@ const ChainInfo = () => {
         </div>
       </Card>
 
-      <Card className="flex flex-col w-2/3 gap-2 p-4 text-center">
+      <Card className="flex flex-col max-w-4xl gap-2 p-4 text-center">
         <h1 className="text-2xl font-semibold">What is {data.name}?</h1>
         <div>
           {rawDescription.map((sentence, i) => (
