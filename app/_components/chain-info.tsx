@@ -12,6 +12,7 @@ import { useGetChainId } from "@/hooks/useGetChainId"
 
 import { Card } from "@/components/ui/card"
 import Socials from "@/components/socials"
+import { cn } from "@/lib/utils"
 
 const ChainInfo = () => {
   const { chainId } = useGetChainId()
@@ -48,14 +49,23 @@ const ChainInfo = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full gap-4">
       <Card className="grid grid-cols-2">
-        <div className="h-full p-2 rounded-md rounded-r-none bg-secondary">
-          <div className="relative w-56 h-full">
+        <div className="h-full p-2 rounded-md flex items-center justify-center rounded-r-none bg-secondary">
+          <div
+            className={cn(
+              data.image.large.includes("16547")
+                ? "relative w-56 h-56 rounded-full border-2 border-white"
+                : "relative w-56 h-full"
+            )}
+          >
             {data?.image && (
               <Image
                 src={data?.image.large}
                 alt="chain logo"
                 fill
-                className="object-cover"
+                className={cn(
+                  "object-cover",
+                  data.image.large.includes("16547") && "rounded-full"
+                )}
               />
             )}
           </div>
