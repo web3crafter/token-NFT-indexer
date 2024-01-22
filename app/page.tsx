@@ -3,7 +3,7 @@ import SearchTokens from "@/components/search-tokens"
 
 export default function Home() {
   return (
-    <main className="container flex flex-col items-center gap-8 my-12">
+    <main className="container flex flex-col items-center gap-8 my-12 px-4 sm:px-8">
       <div className="flex flex-col items-center gap-2">
         <h1 className="text-3xl font-semibold">Token Indexer</h1>
         <p>

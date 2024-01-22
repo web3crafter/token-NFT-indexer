@@ -25,7 +25,7 @@ const NftsOverview = ({ address }: NftsOverviewProps) => {
 
   return (
     <div className="flex flex-col items-center w-full gap-8">
-      <div className="flex flex-col items-center w-full gap-4 p-8 rounded-lg bg-secondary">
+      <div className="flex flex-col items-center w-full gap-4 sm:p-8 p-2 rounded-lg bg-secondary">
         {status === "success" && !data?.ownedNfts?.length && (
           <div>
             <p className="text-lg text-muted-foreground">No NFTS found</p>
@@ -35,7 +35,7 @@ const NftsOverview = ({ address }: NftsOverviewProps) => {
         {isLoading || isRefetching ? (
           <NftCardSkeleton />
         ) : (
-          <div className="grid w-full grid-cols-4 gap-4">
+          <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {data?.ownedNfts.map((nft) => {
               return <NftCard key={nft.tokenId} nft={nft} />
             })}
